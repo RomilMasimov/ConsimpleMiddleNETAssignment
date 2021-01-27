@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace ConsimpleMiddleNetAssignment.Models
 {
@@ -10,5 +12,7 @@ namespace ConsimpleMiddleNetAssignment.Models
         public string Patronymic { get; set; }
         public DateTime Birthday { get; set; }
         public DateTime RegistrationDate { get; set; }
+
+        public IEnumerable<Order> Orders { get; set; }
     }
 }
