@@ -36,7 +36,7 @@ namespace ConsimpleMiddleNetAssignment
                 options.UseSqlServer(Configuration.GetConnectionString("Default"));
             });
 
-            services.AddTransient<ShopService>();
+            services.AddScoped<ShopService>();
 
             services.AddControllers();
 
