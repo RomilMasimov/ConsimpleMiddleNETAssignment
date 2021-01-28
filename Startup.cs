@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using ConsimpleMiddleNetAssignment.Models;
+using ConsimpleMiddleNetAssignment.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -35,11 +36,17 @@ namespace ConsimpleMiddleNetAssignment
                 options.UseSqlServer(Configuration.GetConnectionString("Default"));
             });
 
+            services.AddTransient<ShopService>();
+
             services.AddControllers();
 
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "Consimple Shop API", Version = "v1"});
+
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
             });
         }
 
@@ -55,7 +62,11 @@ namespace ConsimpleMiddleNetAssignment
 
             app.UseSwagger();
 
-            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Consimple Shop API V1"); });
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Consimple Shop API V1");
+                c.RoutePrefix = string.Empty;
+            });
 
             app.UseRouting();
 

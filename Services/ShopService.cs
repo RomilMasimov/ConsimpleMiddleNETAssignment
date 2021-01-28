@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using ConsimpleMiddleNetAssignment.Models;
 using ConsimpleMiddleNetAssignment.ViewModels;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +18,11 @@ namespace ConsimpleMiddleNetAssignment.Services
             _dbContext = dbContext;
         }
 
+        public async Task<Client> GetClientAsync(int clientId)
+        {
+            return await _dbContext.Clients.FindAsync(clientId);
+        }
+        
         public IEnumerable<ClientBirthdayViewModel> BirthdayList(DateTime birthdayDate)
         {
             return _dbContext.Clients
@@ -35,6 +41,7 @@ namespace ConsimpleMiddleNetAssignment.Services
             return _dbContext.Orders
                 .Include(m => m.Client)
                 .Where(m => m.OrderDate >= fromDate)
+                .ToList()
                 .GroupBy(m => m.Client)
                 .Select(g => new RecentlyBuyerViewModel()
                 {
@@ -56,6 +63,7 @@ namespace ConsimpleMiddleNetAssignment.Services
                 .Include(m => m.Product)
                 .ThenInclude(m => m.Category)
                 .Where(m => ordersId.Any(oi => oi == m.OrderId))
+                .ToList()
                 .GroupBy(m => m.Product.Category.Name)
                 .ToDictionary(m => m.Key, 
                     m => m.Sum(p => p.Quantity));

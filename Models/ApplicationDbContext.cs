@@ -62,7 +62,7 @@ namespace ConsimpleMiddleNetAssignment.Models
 
             var allOrderProducts = new List<OrderProduct>();
             var orders = new List<Order>();
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 200; i++)
             {
                 var orderProducts = new List<OrderProduct>();
                 for (int j = 0; j < RandomNumber.Next(1, 5); j++)
@@ -72,7 +72,7 @@ namespace ConsimpleMiddleNetAssignment.Models
                     orderProducts.Add(new OrderProduct
                     {
                         Id = allOrderProducts.Count() + orderProducts.Count() + 1,
-                        OrderId = j + 1,
+                        OrderId = i + 1,
                         ProductId = productIndex + 1,
                         Quantity = quantity,
                         PurchasePrice = products[productIndex].Price * (decimal) quantity
